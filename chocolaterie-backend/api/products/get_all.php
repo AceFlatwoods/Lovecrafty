@@ -2,6 +2,7 @@
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
 require_once '../../config.php';
+/** @var PDO $conn */
 
 try {
     $stmt = $conn->query('SELECT * FROM productos');

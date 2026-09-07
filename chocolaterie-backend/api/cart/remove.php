@@ -1,6 +1,7 @@
 <?php
 header('Content-Type: application/json');
 require_once '../../config.php';
+/** @var PDO $conn */
 
 if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
     // Extract the cart item ID from the URL path

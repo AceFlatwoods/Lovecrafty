@@ -1,6 +1,7 @@
 <?php
 header('Content-Type: application/json');
 require_once '../../config.php';
+/** @var PDO $conn */
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $query = $_GET['query']; // Get the search query from the URL

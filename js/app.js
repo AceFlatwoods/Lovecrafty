@@ -8,15 +8,27 @@ document.addEventListener('DOMContentLoaded', function() {
       const username = document.getElementById('username').value;
       const email = document.getElementById('email').value;
       const password = document.getElementById('password').value;
-    
-      const response = await fetch('chocolaterie-backend/api/users/register.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, email, password }),
-      });
-    
-      const result = await response.json();
-      document.getElementById('registerMessage').textContent = result.message || result.error;
+      const messageElement = document.getElementById('registerMessage');
+
+      try {
+        const response = await fetch('chocolaterie-backend/api/users/register.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, email, password }),
+        });
+
+        const result = await response.json();
+        messageElement.textContent = result.message || result.error;
+        messageElement.style.color = response.ok ? 'green' : '#d9534f';
+
+        if (response.ok) {
+          document.getElementById('registerForm').reset();
+          setTimeout(() => switchTab('login'), 1500);
+        }
+      } catch (error) {
+        messageElement.textContent = 'Network error. Please try again.';
+        messageElement.style.color = '#d9534f';
+      }
     });
   }
 
@@ -29,24 +41,32 @@ document.addEventListener('DOMContentLoaded', function() {
 
       const email = document.getElementById('loginEmail').value;
       const password = document.getElementById('loginPassword').value;
+      const messageElement = document.getElementById('loginMessage');
 
-      const response = await fetch('chocolaterie-backend/api/users/login.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-      });
+      try {
+        const response = await fetch('chocolaterie-backend/api/users/login.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password }),
+        });
 
-      const result = await response.json();
-      console.log('Login response:', result);
-      document.getElementById('loginMessage').textContent = result.message || result.error;
+        const result = await response.json();
+        console.log('Login response:', result);
+        messageElement.textContent = result.message || result.error;
+        messageElement.style.color = response.ok ? 'green' : '#d9534f';
 
-      if (response.ok) {
-        if (result.user && result.user.id_user) {
-          localStorage.setItem('userId', result.user.id_user);
-          console.log('Login successful, userId:', result.user.id_user);
-        } else {
-          console.error('User ID not found in response:', result);
+        if (response.ok) {
+          if (result.user && result.user.id_user) {
+            localStorage.setItem('userId', result.user.id_user);
+            console.log('Login successful, userId:', result.user.id_user);
+            setTimeout(() => window.location.href = 'index.php', 500);
+          } else {
+            console.error('User ID not found in response:', result);
+          }
         }
+      } catch (error) {
+        messageElement.textContent = 'Network error. Please try again.';
+        messageElement.style.color = '#d9534f';
       }
     });
   }

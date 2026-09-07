@@ -1,6 +1,7 @@
 <?php
 header('Content-Type: application/json');
 require_once '../../config.php';
+/** @var PDO $conn */
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $userId = $_GET['userId']; // Get the user ID from the query parameters
