@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mi Carrito - LoveCrafty</title>
+  <link rel="stylesheet" href="css/stylescart.css">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="logo">
+      <a href="index.php"><img src="img/logo.png" alt="LoveCrafty Logo"></a>
+      <span></span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="index.php">Home</a></li>
+      <li><a href="items.html">Shop</a></li>
+      <li><a href="about.html">About Us</a></li>
+      <li><a href="login.html">Account</a></li>
+    </ul>
+    <div class="cart">
+      <a href="carrito.html"><img src="img/cart-icon.png" alt="Carrito"> <span id="cart-count">0</span></a>
+    </div>
+  </nav>
+
+  <main class="container">
+    <section class="section">
+      <h1 class="section-title">My Shopping Cart</h1>
+      <div class="cart-section">
+      <!-- Update the cart-items section in cart.html (replace the empty cart div) -->
+      <div class="cart-items" id="cartItems">
+        <!-- Items will be loaded here by JavaScript -->
+      </div>
+        
+        <div class="cart-summary">
+          <h3>Order Summary</h3>
+          <div class="summary-details">
+            <p>Subtotal: <span id="subtotal">$0.00</span></p>
+            <p>Shipping: <span id="shipping">$5.99</span></p>
+            <p class="total">Total: <span id="total">$5.99</span></p>
+          </div>
+          <!--<button href="checkout.html" class="btn checkout-btn">Proceed to Checkout</button>-->
+          <a href="checkout.html" class="btn">Proceed to Checkout</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>About LoveCrafty</h3>
+        <p>Chocolaterie with a thousand faces and a thousand more delights. Our mission is to bring our god to your life, <i>even if it takes one bite at a time</i>.</p>
+      </div>
+      <div class="footer-section">
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="index.php">Home</a></li>
+          <li><a href="items.html">Shop</a></li>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="login.html">Account</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Contact Us</h3>
+        <p>Email: info@rlyehanchocolat.com</p>
+        <p>Phone: +1 (123) 456-7890</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2025 LoveCrafty™. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
