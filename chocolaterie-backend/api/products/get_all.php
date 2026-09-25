@@ -1,11 +1,11 @@
 <?php
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
-require_once '../../config.php';
+require_once __DIR__ . '/../../config.php';
 /** @var PDO $conn */
 
 try {
-    $stmt = $conn->query('SELECT * FROM productos');
+    $stmt = $conn->query('SELECT id_producto, nombre, descripcion, precio, stock, image_url FROM productos ORDER BY id_producto');
     $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
     // Ensure price is formatted as number
@@ -15,7 +15,8 @@ try {
             'nombre' => $product['nombre'],
             'descripcion' => $product['descripcion'],
             'precio' => (float)$product['precio'], // Force float conversion
-            'image_url' => 'img/' . strtolower(preg_replace('/[^a-z0-9]+/i', '-', $product['nombre'])) . '.jpg'
+            'stock' => (int)$product['stock'],
+            'image_url' => $product['image_url'] ?: 'img/default-product.png'
         ];
     }, $products);
     

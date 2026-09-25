@@ -1,8 +1,8 @@
 <?php
 session_start();
-require_once '../chocolaterie-backend/config.php';
+require_once __DIR__ . '/../chocolaterie-backend/config.php';
 
-if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] != 'admin') {
+if (!isset($_SESSION['user_id']) || ($_SESSION['user_role'] ?? '') !== 'admin') {
     header("Location: ../login.html");
     exit();
 }

@@ -75,6 +75,7 @@ if (!isset($_SESSION['user_id'])) {
         <button class="btn" onclick="addToCart(3)">Add to Cart</button>
       </div>
     </div>
+    <a class="btn" href="items.html">Explore all chocolates</a>
   </section>
 
   <!-- Newsletter Section -->

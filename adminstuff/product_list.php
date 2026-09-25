@@ -1,17 +1,17 @@
 <?php
 session_start();
-if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] != 'admin') {
-    header("Location: ../../login.php");
+if (!isset($_SESSION['user_id']) || ($_SESSION['user_role'] ?? '') !== 'admin') {
+    header("Location: ../login.html");
     exit();
 }
 
-$db = new mysqli("localhost", "root", "", "lovecrafty", "3307");
+require_once __DIR__ . '/../chocolaterie-backend/config.php';
 
-$query = "SELECT p.*, c.nombre as categoria 
+$query = "SELECT p.*, c.nombre AS categoria
           FROM productos p
           LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
           ORDER BY p.id_producto ASC";
-$result = $db->query($query);
+$products = $conn->query($query)->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -40,7 +40,16 @@ $result = $db->query($query);
 <body>
     <h1>Product Management</h1>
     <a href="dashboard.php" class="btn">Back to Dashboard</a>
-    <a href="add_product.php" class="btn" style="background: #28a745;">Add New Product</a>
+    <a href="add_product.php" class="btn" style="background: #2898a7;">Add New Product</a>
+
+    <?php foreach (['success', 'error'] as $messageType): ?>
+        <?php if (isset($_SESSION[$messageType])): ?>
+            <p class="<?= $messageType === 'error' ? 'low-stock' : '' ?>">
+                <?= htmlspecialchars($_SESSION[$messageType]) ?>
+            </p>
+            <?php unset($_SESSION[$messageType]); ?>
+        <?php endif; ?>
+    <?php endforeach; ?>
     
     <table border="1">
         <tr>
@@ -53,7 +62,7 @@ $result = $db->query($query);
             <th>Image URL</th>
             <th>Actions</th>
         </tr>
-        <?php while ($product = $result->fetch_assoc()): ?>
+        <?php foreach ($products as $product): ?>
         <tr>
             <td><?= htmlspecialchars($product['id_producto']) ?></td>
             <td><?= htmlspecialchars($product['nombre']) ?></td>
@@ -72,7 +81,7 @@ $result = $db->query($query);
                 </a>
             </td>
         </tr>
-        <?php endwhile; ?>
+        <?php endforeach; ?>
     </table>
 </body>
 </html>
