@@ -127,17 +127,23 @@ img {
 
 .cart-count {
   position: absolute;
-  top: -10px;
+  top: -8px;
   right: -10px;
   background-color: #8B4513;
   color: white;
-  border-radius: 50%;
-  width: 20px;
-  height: 20px;
-  display: flex;
+  border: 2px solid white;
+  border-radius: 999px;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 5px;
+  box-sizing: border-box;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   font-size: 12px;
+  font-weight: 600;
+  line-height: 1;
+  z-index: 1;
 }
 
 /* Dropdown Menu */
@@ -452,13 +458,20 @@ img {
 @media (max-width: 768px) {
   .navbar {
     padding: 15px 20px;
-    flex-direction: column;
-    align-items: flex-start;
+    flex-wrap: wrap;
+    row-gap: 12px;
   }
   
   .nav-links {
-    margin-top: 20px;
+    order: 3;
+    flex: 1 0 100%;
     flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 0;
+  }
+
+  .cart {
+    margin-left: auto;
   }
   
   .hero {
@@ -484,6 +497,7 @@ img {
   }
   
   .product-card {
+    box-sizing: border-box;
     width: 100%;
   }
   

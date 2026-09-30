@@ -29,17 +29,20 @@ if (!isset($_SESSION['user_id'])) {
       <li class="dropdown">
         <a href="items.html">Shop</a>
         <ul class="dropdown-menu">
-          <li><a href="#dark-chocolate">Dark Chocolate</a></li>
-          <li><a href="#milk-chocolate">Milk Chocolate</a></li>
-          <li><a href="#white-chocolate">White Chocolate</a></li>
-          <li><a href="#special-offers">Special Offers</a></li>
+          <li><a href="items.html">Dark Chocolate</a></li>
+          <li><a href="items.html">Milk Chocolate</a></li>
+          <li><a href="items.html">White Chocolate</a></li>
+          <li><a href="items.html">Special Offers</a></li>
         </ul>
       </li>
       <li><a href="about.html">About Us</a></li>
       <li><a href="login.html">Account</a></li>
     </ul>
     <div class="cart">
-      <a href="cart.html"><img src="img/cart-icon.png" alt="Cart"></a>
+      <a href="cart.html" aria-label="Shopping cart">
+        <img src="img/cart-icon.png" alt="">
+        <span class="cart-count" aria-live="polite" aria-atomic="true">0</span>
+      </a>
     </div>
   </nav>
 
@@ -48,7 +51,7 @@ if (!isset($_SESSION['user_id'])) {
     <div class="hero-content">
       <h1>Indulge in the Finest Chocolates</h1>
       <p>Handcrafted with the powers of R'Lyeh, delivered to your doorstep.</p>
-      <a href="#shop" class="btn">Shop Now!</a>
+      <a href="items.html" class="btn">Shop Now!</a>
     </div>
   </section>
 
@@ -118,6 +121,6 @@ if (!isset($_SESSION['user_id'])) {
     </div>
 </footer>
    <!-- Include your JavaScript file -->
-   <script src="js/app.js"></script>
+  <script src="js/app.js?v=2"></script>
 </body>
 </html>

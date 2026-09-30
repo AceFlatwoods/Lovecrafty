@@ -91,8 +91,34 @@ async function addToCart(productId) {
 
   const result = await response.json();
   alert(result.message || result.error);
+  if (response.ok) {
+    await updateCartCount();
+  }
 }
 //--------------------------------------------------------------------------------------------------------Add to cart button
+
+async function updateCartCount() {
+  const badges = document.querySelectorAll('.cart-count');
+  if (!badges.length) return;
+
+  const userId = localStorage.getItem('userId');
+  if (!userId) {
+    badges.forEach(badge => { badge.textContent = '0'; });
+    return;
+  }
+
+  try {
+    const response = await fetch(`chocolaterie-backend/api/cart/view.php?userId=${encodeURIComponent(userId)}`);
+    if (!response.ok) throw new Error('Failed to load cart count');
+
+    const result = await response.json();
+    const count = (result.cart || []).reduce((total, item) => total + Number(item.quantity || 0), 0);
+    badges.forEach(badge => { badge.textContent = count; });
+  } catch (error) {
+    console.error('Error loading cart count:', error);
+    badges.forEach(badge => { badge.textContent = '0'; });
+  }
+}
 
 async function removeFromCart(cartId) {
   try {
@@ -172,9 +198,7 @@ async function displayCart() {
       const shipping = 5.99;
       document.getElementById('total').textContent = `$${(subtotal + shipping).toFixed(2)}`;
       
-      // Update cart count
-      const totalItems = result.cart.reduce((sum, item) => sum + item.quantity, 0);
-      document.getElementById('cart-count').textContent = totalItems;
+      await updateCartCount();
     } else {
       cartItemsDiv.innerHTML = `
         <div class="empty-cart">
@@ -182,7 +206,7 @@ async function displayCart() {
           <a href="index.html" class="btn">Browse Products</a>
         </div>
       `;
-      document.getElementById('cart-count').textContent = '0';
+      await updateCartCount();
     }
   } catch (error) {
     console.error('Error loading cart:', error);
@@ -215,12 +239,8 @@ function setupIndexPage() {
 // Initialize the right view based on page
 document.addEventListener('DOMContentLoaded', function() {
   setupIndexPage();
-  // For cart.html
-  if (document.querySelector('.cart-items')) {
-    displayCart();
-  }
-  // For testing.html
-  else if (document.getElementById('cartItems')) {
+  updateCartCount();
+  if (document.getElementById('cartItems')) {
     displayCart();
   }
 });

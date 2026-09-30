@@ -16,9 +16,15 @@
 
     .products-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 30px;
       margin-top: 40px;
+    }
+
+    .products-grid .product-card {
+      box-sizing: border-box;
+      width: 100%;
+      min-width: 0;
     }
 
     .product-card {
@@ -34,9 +40,13 @@
     }
 
     .product-image {
+      display: block;
       width: 100%;
-      height: 200px;
-      object-fit: cover;
+      aspect-ratio: 1 / 1;
+      height: auto;
+      max-height: none;
+      object-fit: contain;
+      background: #f9f9f9;
     }
 
     .product-info {
@@ -79,17 +89,20 @@
       <li class="dropdown">
         <a href="items.html">Shop</a>
         <ul class="dropdown-menu">
-          <li><a href="#dark-chocolate">Dark Chocolate</a></li>
-          <li><a href="#milk-chocolate">Milk Chocolate</a></li>
-          <li><a href="#white-chocolate">White Chocolate</a></li>
-          <li><a href="#special-offers">Special Offers</a></li>
+          <li><a href="items.html">Dark Chocolate</a></li>
+          <li><a href="items.html">Milk Chocolate</a></li>
+          <li><a href="items.html">White Chocolate</a></li>
+          <li><a href="items.html">Special Offers</a></li>
         </ul>
       </li>
       <li><a href="about.html">About Us</a></li>
       <li><a href="login.html">Account</a></li>
     </ul>
     <div class="cart">
-      <a href="cart.html"><img src="img/cart-icon.png" alt="Cart"></a>
+      <a href="cart.html" aria-label="Shopping cart">
+        <img src="img/cart-icon.png" alt="">
+        <span class="cart-count" aria-live="polite" aria-atomic="true">0</span>
+      </a>
     </div>
   </nav>
 
@@ -135,6 +148,7 @@
     </div>
   </footer>
 
+  <script src="js/app.js?v=2"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
     fetch('chocolaterie-backend/api/products/get_all.php')
@@ -208,7 +222,11 @@
           quantity: 1 
         })
       })
-      .then(response => response.json())
+      .then(async response => {
+        const result = await response.json();
+        if (response.ok) await updateCartCount();
+        return result;
+      })
       .then(result => {
         alert(result.message || 'Item added to cart');
       })
