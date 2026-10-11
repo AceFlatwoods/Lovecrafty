@@ -19,11 +19,14 @@ try {
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $minimumStock = filter_var($_POST['stock_minimo'] ?? null, FILTER_VALIDATE_INT);
+    $initialStock = filter_var($_POST['stock'] ?? null, FILTER_VALIDATE_INT);
 
-    if ($minimumStock === false || $minimumStock === null || $minimumStock < 0) {
-        $_SESSION['error'] = "Minimum stock must be a non-negative whole number.";
+    if ($minimumStock === false || $minimumStock === null || $minimumStock < 0 ||
+        $initialStock === false || $initialStock === null || $initialStock < 0 || $initialStock > 2147483647) {
+        $_SESSION['error'] = "Stock values must be non-negative whole numbers within the supported range.";
     } else {
         try {
+            $conn->beginTransaction();
             $stmt = $conn->prepare("
                 INSERT INTO productos (nombre, descripcion, precio, stock, stock_minimo, id_categoria, image_url)
                 VALUES (?, ?, ?, ?, ?, ?, ?)
@@ -39,11 +42,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $_POST['image_url']
             ]);
 
+            $productId = (int)$conn->lastInsertId();
+            if ($initialStock > 0) {
+                $stmt = $conn->prepare("
+                    INSERT INTO movimientos_inventario
+                        (id_producto, id_usuario, tipo, cantidad, stock_anterior, stock_nuevo, motivo)
+                    VALUES (?, ?, 'entrada', ?, 0, ?, 'Stock inicial del producto')
+                ");
+                $stmt->execute([$productId, $_SESSION['user_id'], $initialStock, $initialStock]);
+            }
+
+            $conn->commit();
             $_SESSION['success'] = "Product created successfully!";
             header("Location: product_list.php");
             exit();
-        } catch (PDOException $e) {
-            $_SESSION['error'] = "Error creating product: " . $e->getMessage();
+        } catch (Throwable $e) {
+            if ($conn->inTransaction()) {
+                $conn->rollBack();
+            }
+            error_log('Product creation failed: ' . $e->getMessage());
+            $_SESSION['error'] = "Error creating product. Please try again.";
         }
     }
 }

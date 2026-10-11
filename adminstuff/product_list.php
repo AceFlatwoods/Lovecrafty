@@ -57,6 +57,7 @@ foreach ($products as $product) {
     <h1>Product Management</h1>
     <a href="dashboard.php" class="btn">Back to Dashboard</a>
     <a href="add_product.php" class="btn" style="background: #2898a7;">Add New Product</a>
+    <a href="inventory_history.php" class="btn" style="background: #6f42c1;">Movement history</a>
     <p>Low stock: <?= $lowStockCount ?> | Out of stock: <?= $outOfStockCount ?></p>
 
     <?php foreach (['success', 'error'] as $messageType): ?>
@@ -100,6 +101,7 @@ foreach ($products as $product) {
             <td><?= htmlspecialchars($product['image_url']) ?></td>
             <td>
                 <a href="edit_product.php?id=<?= $product['id_producto'] ?>">Edit</a>
+                | <a href="adjust_stock.php?id=<?= $product['id_producto'] ?>">Adjust stock</a>
                 | <a href="delete_product.php?id=<?= $product['id_producto'] ?>" 
                    onclick="return confirm('Are you sure you want to delete <?= htmlspecialchars(addslashes($product['nombre'])) ?>?')">
                    Delete

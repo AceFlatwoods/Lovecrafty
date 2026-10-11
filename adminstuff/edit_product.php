@@ -38,7 +38,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     nombre = ?,
                     descripcion = ?,
                     precio = ?,
-                    stock = ?,
                     stock_minimo = ?,
                     id_categoria = ?,
                     image_url = ?
@@ -49,7 +48,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $_POST['nombre'],
                 $_POST['descripcion'],
                 $_POST['precio'],
-                $_POST['stock'],
                 $minimumStock,
                 $_POST['id_categoria'],
                 $_POST['image_url'],
@@ -123,11 +121,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </div>
         
         <div class="form-group">
-            <label>Stock:</label>
-            <input type="number" name="stock" min="0" value="<?= $product['stock'] ?? '' ?>" required>
-        </div>
-
-        <div class="form-group">
             <label for="stock_minimo">Minimum Stock Alert:</label>
             <input type="number" id="stock_minimo" name="stock_minimo" min="0" value="<?= htmlspecialchars($product['stock_minimo'] ?? '5') ?>" required>
             <small>Show a low-stock warning when stock reaches this quantity or lower.</small>
@@ -151,6 +144,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </div>
         
         <button type="submit" class="btn">Save Changes</button>
+        <a href="adjust_stock.php?id=<?= htmlspecialchars((string)($product['id_producto'] ?? '')) ?>" class="btn" style="background: #2898a7;">Adjust stock</a>
         <a href="product_list.php" class="btn" style="background: #6c757d;">Cancel</a>
     </form>
 </body>
