@@ -5,7 +5,7 @@ require_once __DIR__ . '/../../config.php';
 /** @var PDO $conn */
 
 try {
-    $stmt = $conn->query('SELECT id_producto, nombre, descripcion, precio, stock, stock_minimo, image_url FROM productos ORDER BY id_producto');
+    $stmt = $conn->query('SELECT id_producto, nombre, descripcion, precio, stock, stock_minimo, image_url FROM productos WHERE activo = 1 ORDER BY id_producto');
     $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
     // Ensure price is formatted as number

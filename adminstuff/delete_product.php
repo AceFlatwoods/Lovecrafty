@@ -7,25 +7,45 @@ if (!isset($_SESSION['user_id']) || ($_SESSION['user_role'] ?? '') !== 'admin') 
     exit();
 }
 
-if (isset($_GET['id'])) {
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    header('Location: product_list.php');
+    exit();
+}
+
+$productId = filter_var($_POST['id'] ?? null, FILTER_VALIDATE_INT);
+$active = filter_var($_POST['activo'] ?? null, FILTER_VALIDATE_INT);
+$token = $_POST['csrf_token'] ?? '';
+
+if ($productId === false || $productId === null || $productId <= 0 ||
+    !in_array($active, [0, 1], true) ||
+    !is_string($token) || !isset($_SESSION['product_status_csrf_token']) ||
+    !hash_equals($_SESSION['product_status_csrf_token'], $token)) {
+    $_SESSION['error'] = 'Invalid product status request. Please try again.';
+} else {
     try {
-        // Check if product exists in any orders
-        $stmt = $conn->prepare("SELECT COUNT(*) FROM order_items WHERE id_producto = ?");
-        $stmt->execute([$_GET['id']]);
-        $order_count = $stmt->fetchColumn();
-        
-        if ($order_count > 0) {
-            $_SESSION['error'] = "Cannot delete product - it exists in existing orders!";
+        $stmt = $conn->prepare('UPDATE productos SET activo = ? WHERE id_producto = ?');
+        $stmt->execute([$active, $productId]);
+
+        if ($stmt->rowCount() > 0) {
+            $_SESSION['success'] = $active === 1
+                ? 'Product is now visible in the shop.'
+                : 'Product was deactivated and hidden from the shop.';
         } else {
-            $stmt = $conn->prepare("DELETE FROM productos WHERE id_producto = ?");
-            $stmt->execute([$_GET['id']]);
-            $_SESSION['success'] = "Product deleted successfully!";
+            $stmt = $conn->prepare('SELECT activo FROM productos WHERE id_producto = ?');
+            $stmt->execute([$productId]);
+            $currentStatus = $stmt->fetchColumn();
+            if ($currentStatus === false) {
+                $_SESSION['error'] = 'Product not found.';
+            } else {
+                $_SESSION['success'] = 'Product visibility is unchanged.';
+            }
         }
     } catch (PDOException $e) {
-        $_SESSION['error'] = "Error deleting product: " . $e->getMessage();
+        error_log('Product status update failed: ' . $e->getMessage());
+        $_SESSION['error'] = 'Could not update product visibility. Please try again.';
     }
 }
 
-header("Location: product_list.php");
+header('Location: product_list.php');
 exit();
 ?>

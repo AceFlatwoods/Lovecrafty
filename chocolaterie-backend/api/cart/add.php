@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         $conn->beginTransaction();
 
-        $stmt = $conn->prepare('SELECT stock FROM productos WHERE id_producto = :productId FOR UPDATE');
+        $stmt = $conn->prepare('SELECT stock, activo FROM productos WHERE id_producto = :productId FOR UPDATE');
         $stmt->execute([':productId' => $productId]);
         $product = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -35,6 +35,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $conn->rollBack();
             http_response_code(404);
             echo json_encode(['error' => 'Product not found']);
+            exit;
+        }
+
+        if ((int)$product['activo'] !== 1) {
+            $conn->rollBack();
+            http_response_code(409);
+            echo json_encode(['error' => 'This product is no longer available']);
             exit;
         }
 

@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $conn->beginTransaction();
 
         $stmt = $conn->prepare('
-            SELECT c.id_producto, c.quantity, p.nombre, p.stock, p.precio
+            SELECT c.id_producto, c.quantity, p.nombre, p.stock, p.precio, p.activo
             FROM carts AS c
             INNER JOIN productos AS p ON p.id_producto = c.id_producto
             WHERE c.id_user = :userId
@@ -40,6 +40,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         foreach ($cartItems as $item) {
+            if ((int)$item['activo'] !== 1) {
+                $conn->rollBack();
+                http_response_code(409);
+                echo json_encode([
+                    'error' => $item['nombre'] . ' is no longer available. Remove it from your cart before checkout.'
+                ]);
+                exit;
+            }
+
             if ((int)$item['quantity'] <= 0 || (int)$item['stock'] < (int)$item['quantity']) {
                 $conn->rollBack();
                 http_response_code(409);

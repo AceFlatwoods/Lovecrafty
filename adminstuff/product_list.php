@@ -7,6 +7,10 @@ if (!isset($_SESSION['user_id']) || ($_SESSION['user_role'] ?? '') !== 'admin') 
 
 require_once __DIR__ . '/../chocolaterie-backend/config.php';
 
+if (empty($_SESSION['product_status_csrf_token'])) {
+    $_SESSION['product_status_csrf_token'] = bin2hex(random_bytes(32));
+}
+
 $query = "SELECT p.*, c.nombre AS categoria
           FROM productos p
           LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
@@ -16,6 +20,10 @@ $lowStockCount = 0;
 $outOfStockCount = 0;
 
 foreach ($products as $product) {
+    if (!(int)$product['activo']) {
+        continue;
+    }
+
     $stock = (int)$product['stock'];
     $minimumStock = (int)$product['stock_minimo'];
 
@@ -51,6 +59,18 @@ foreach ($products as $product) {
             margin-bottom: 20px;
         }
         .btn:hover { background: #5a6268; }
+        .status-button {
+            display: inline-block;
+            background: #8B4513;
+            color: #fff;
+            padding: 8px 12px;
+            border: 0;
+            border-radius: 4px;
+            cursor: pointer;
+            font: inherit;
+        }
+        .status-button:hover { background: #6f360f; }
+        .status-button:focus-visible { outline: 2px solid #242424; outline-offset: 2px; }
     </style>
 </head>
 <body>
@@ -78,6 +98,7 @@ foreach ($products as $product) {
             <th>Stock</th>
             <th>Minimum stock</th>
             <th>Status</th>
+            <th>Shop visibility</th>
             <th>Category</th>
             <th>Image URL</th>
             <th>Actions</th>
@@ -88,6 +109,7 @@ foreach ($products as $product) {
             $minimumStock = (int)$product['stock_minimo'];
             $statusLabel = $stock <= 0 ? 'Out of stock' : ($stock <= $minimumStock ? 'Low stock' : 'Available');
             $statusClass = $stock <= 0 ? 'status-out' : ($stock <= $minimumStock ? 'status-low' : 'status-available');
+            $isActive = (int)$product['activo'] === 1;
         ?>
         <tr>
             <td><?= htmlspecialchars($product['id_producto']) ?></td>
@@ -97,15 +119,18 @@ foreach ($products as $product) {
             <td><?= $stock ?></td>
             <td><?= $minimumStock ?></td>
             <td><span class="stock-status <?= $statusClass ?>"><?= $statusLabel ?></span></td>
+            <td><?= $isActive ? 'Visible' : 'Hidden' ?></td>
             <td><?= htmlspecialchars($product['categoria'] ?? 'N/A') ?></td>
             <td><?= htmlspecialchars($product['image_url']) ?></td>
             <td>
                 <a href="edit_product.php?id=<?= $product['id_producto'] ?>">Edit</a>
                 | <a href="adjust_stock.php?id=<?= $product['id_producto'] ?>">Adjust stock</a>
-                | <a href="delete_product.php?id=<?= $product['id_producto'] ?>" 
-                   onclick="return confirm('Are you sure you want to delete <?= htmlspecialchars(addslashes($product['nombre'])) ?>?')">
-                   Delete
-                </a>
+                | <form method="POST" action="delete_product.php" style="display: inline;">
+                    <input type="hidden" name="id" value="<?= (int)$product['id_producto'] ?>">
+                    <input type="hidden" name="activo" value="<?= $isActive ? '0' : '1' ?>">
+                    <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['product_status_csrf_token'], ENT_QUOTES, 'UTF-8') ?>">
+                    <button type="submit" class="status-button"><?= $isActive ? 'Deactivate' : 'Activate' ?></button>
+                </form>
             </td>
         </tr>
         <?php endforeach; ?>

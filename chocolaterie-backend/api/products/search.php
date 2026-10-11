@@ -7,7 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $query = $_GET['query']; // Get the search query from the URL
 
     try {
-        $stmt = $conn->prepare('SELECT * FROM productos WHERE nombre LIKE :query');
+        $stmt = $conn->prepare('SELECT * FROM productos WHERE activo = 1 AND nombre LIKE :query');
         $stmt->execute([':query' => "%$query%"]);
         $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
