@@ -333,6 +333,10 @@ a {
 .auth-form h2 {
   text-align: center;
   margin-bottom: 30px;
+}
+
+.is-hidden {
+  display: none;
   color: #333;
 }
 

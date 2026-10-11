@@ -68,31 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <html>
 <head>
     <title>Edit Product</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        .form-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 5px; font-weight: bold; }
-        input, textarea, select { 
-            width: 100%; 
-            padding: 8px; 
-            border: 1px solid #ddd; 
-            border-radius: 4px; 
-            box-sizing: border-box;
-        }
-        .btn { 
-            display: inline-block;
-            background: #007bff; 
-            color: white; 
-            padding: 10px 15px; 
-            border: none;
-            border-radius: 4px; 
-            cursor: pointer;
-            text-decoration: none;
-        }
-        .btn:hover { background: #0069d9; }
-        .error { color: red; }
-        .success { color: green; }
-    </style>
+    <link rel="stylesheet" href="../css/admin.css">
 </head>
 <body>
     <h1>Edit Product</h1>
@@ -144,8 +120,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </div>
         
         <button type="submit" class="btn">Save Changes</button>
-        <a href="adjust_stock.php?id=<?= htmlspecialchars((string)($product['id_producto'] ?? '')) ?>" class="btn" style="background: #2898a7;">Adjust stock</a>
-        <a href="product_list.php" class="btn" style="background: #6c757d;">Cancel</a>
+        <a href="adjust_stock.php?id=<?= htmlspecialchars((string)($product['id_producto'] ?? '')) ?>" class="btn btn-add">Adjust stock</a>
+        <a href="product_list.php" class="btn btn-secondary">Cancel</a>
     </form>
 </body>
 </html>

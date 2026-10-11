@@ -39,45 +39,13 @@ foreach ($products as $product) {
 <html>
 <head>
     <title>Product Management</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-        th { background-color: #f2f2f2; }
-        .stock-status { display: inline-block; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; }
-        .status-available { color: #176b37; background: #e2f4e8; }
-        .status-low { color: #7a4b00; background: #fff1cc; }
-        .status-out { color: #9b1c1c; background: #fde2e2; }
-        a { color: #007bff; text-decoration: none; }
-        a:hover { text-decoration: underline; }
-        .btn { 
-            display: inline-block;
-            background: #6c757d; 
-            color: white; 
-            padding: 8px 12px; 
-            border-radius: 4px; 
-            margin-bottom: 20px;
-        }
-        .btn:hover { background: #5a6268; }
-        .status-button {
-            display: inline-block;
-            background: #8B4513;
-            color: #fff;
-            padding: 8px 12px;
-            border: 0;
-            border-radius: 4px;
-            cursor: pointer;
-            font: inherit;
-        }
-        .status-button:hover { background: #6f360f; }
-        .status-button:focus-visible { outline: 2px solid #242424; outline-offset: 2px; }
-    </style>
+    <link rel="stylesheet" href="../css/admin.css">
 </head>
 <body>
     <h1>Product Management</h1>
     <a href="dashboard.php" class="btn">Back to Dashboard</a>
-    <a href="add_product.php" class="btn" style="background: #2898a7;">Add New Product</a>
-    <a href="inventory_history.php" class="btn" style="background: #6f42c1;">Movement history</a>
+    <a href="add_product.php" class="btn btn-add">Add New Product</a>
+    <a href="inventory_history.php" class="btn btn-history">Movement history</a>
     <p>Low stock: <?= $lowStockCount ?> | Out of stock: <?= $outOfStockCount ?></p>
 
     <?php foreach (['success', 'error'] as $messageType): ?>
@@ -125,7 +93,7 @@ foreach ($products as $product) {
             <td>
                 <a href="edit_product.php?id=<?= $product['id_producto'] ?>">Edit</a>
                 | <a href="adjust_stock.php?id=<?= $product['id_producto'] ?>">Adjust stock</a>
-                | <form method="POST" action="delete_product.php" style="display: inline;">
+                | <form method="POST" action="delete_product.php" class="inline-form">
                     <input type="hidden" name="id" value="<?= (int)$product['id_producto'] ?>">
                     <input type="hidden" name="activo" value="<?= $isActive ? '0' : '1' ?>">
                     <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['product_status_csrf_token'], ENT_QUOTES, 'UTF-8') ?>">

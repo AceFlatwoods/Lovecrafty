@@ -71,53 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <html>
 <head>
     <title>Add New Product</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        .form-container { max-width: 600px; margin: 0 auto; }
-        .form-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 5px; font-weight: bold; }
-        input, textarea, select { 
-            width: 100%; 
-            padding: 8px; 
-            border: 1px solid #ddd; 
-            border-radius: 4px; 
-            box-sizing: border-box;
-        }
-        .btn { 
-            display: inline-block;
-            background: #28a745; 
-            color: white; 
-            padding: 10px 15px; 
-            border: none;
-            border-radius: 4px; 
-            cursor: pointer;
-            text-decoration: none;
-            margin-right: 10px;
-        }
-        .btn:hover { background: #218838; }
-        .btn-secondary {
-            background: #6c757d;
-        }
-        .btn-secondary:hover {
-            background: #5a6268;
-        }
-        .error { 
-            color: #dc3545; 
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #f5c6cb;
-            background-color: #f8d7da;
-            border-radius: 4px;
-        }
-        .success { 
-            color: #155724; 
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #c3e6cb;
-            background-color: #d4edda;
-            border-radius: 4px;
-        }
-    </style>
+    <link rel="stylesheet" href="../css/admin.css">
 </head>
 <body>
     <div class="form-container">

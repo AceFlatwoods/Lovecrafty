@@ -19,26 +19,11 @@ $result = $db->query($query);
 <html>
 <head>
     <title>Usuarios</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-        th { background-color: #f2f2f2; }
-        .pagada { color: green; }
-        .pendiente { color: orange; font-weight: bold; }
-        .vencida { color: red; }
-        .actions { white-space: nowrap; }
-        .btn { 
-            background: #4CAF50; color: white; padding: 8px 12px; 
-            text-decoration: none; border-radius: 4px; 
-        }
-        .btn:hover { background: #45a049; }
-    </style>
+    <link rel="stylesheet" href="../css/admin.css">
 </head>
 <body>
     <h1>Users</h1>
-    <a href="dashboard.php" class="btn" style="background: #6c757d;">Dashboard</a>
+    <a href="dashboard.php" class="btn btn-secondary">Dashboard</a>
     
     <table border="1">
         <tr>

@@ -1,0 +1,286 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+}
+
+nav li {
+    margin: 5px 0;
+}
+
+nav a {
+    display: block;
+    padding: 10px;
+    background: #f0f0f0;
+    text-decoration: none;
+    color: #333;
+    border-radius: 5px;
+}
+
+nav a:hover {
+    background: #ddd;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th,
+td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+.actions {
+    white-space: nowrap;
+}
+
+.btn {
+    display: inline-block;
+    background: #8B4513;
+    color: #fff;
+    padding: 8px 12px;
+    border: 0;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background: #6f360f;
+}
+
+.btn-secondary {
+    background: #6c757d;
+}
+
+.btn-secondary:hover {
+    background: #5a6268;
+}
+
+.btn-add {
+    background: #2898a7;
+}
+
+.btn-add:hover {
+    background: #217d89;
+}
+
+.btn-history {
+    background: #6f42c1;
+}
+
+.btn-history:hover {
+    background: #5935a0;
+}
+
+.form-container {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label,
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.order-status-select {
+    width: auto;
+    border: none;
+    background: none;
+    padding: 0;
+}
+
+.error {
+    color: #9b1c1c;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #f5c6cb;
+    background-color: #f8d7da;
+    border-radius: 4px;
+}
+
+.success {
+    color: #155724;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #c3e6cb;
+    background-color: #d4edda;
+    border-radius: 4px;
+}
+
+.stock-status {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.status-available {
+    color: #176b37;
+    background: #e2f4e8;
+}
+
+.status-low {
+    color: #7a4b00;
+    background: #fff1cc;
+}
+
+.status-out {
+    color: #9b1c1c;
+    background: #fde2e2;
+}
+
+.status-button {
+    display: inline-block;
+    background: #8B4513;
+    color: #fff;
+    padding: 8px 12px;
+    border: 0;
+    border-radius: 4px;
+    cursor: pointer;
+    font: inherit;
+}
+
+.status-button:hover {
+    background: #6f360f;
+}
+
+.status-button:focus-visible {
+    outline: 2px solid #242424;
+    outline-offset: 2px;
+}
+
+.toolbar,
+.filters,
+.pagination {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.toolbar {
+    margin-bottom: 20px;
+}
+
+.filters {
+    margin: 20px 0;
+}
+
+.filters label {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+}
+
+.filters select,
+.filters button {
+    padding: 8px;
+}
+
+.table-wrap {
+    overflow-x: auto;
+}
+
+.table-wrap table {
+    margin-top: 16px;
+}
+
+.table-wrap th {
+    white-space: nowrap;
+}
+
+.movement-entry {
+    color: #176b37;
+    font-weight: bold;
+}
+
+.movement-exit {
+    color: #9b1c1c;
+    font-weight: bold;
+}
+
+.movement-adjustment {
+    color: #7a4b00;
+    font-weight: bold;
+}
+
+.pagination {
+    justify-content: space-between;
+    margin-top: 18px;
+}
+
+.empty {
+    padding: 20px;
+    background: #f7f7f7;
+}
+
+.pagada {
+    color: green;
+}
+
+.pendiente {
+    color: orange;
+    font-weight: bold;
+}
+
+.vencida {
+    color: red;
+}
+
+.status-message {
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 4px;
+}
+
+.status-message.success {
+    background-color: #dff0d8;
+    color: #3c763d;
+}
+
+.status-message.error {
+    background-color: #f2dede;
+    color: #a94442;
+}
+
+.inline-form {
+    display: inline;
+}

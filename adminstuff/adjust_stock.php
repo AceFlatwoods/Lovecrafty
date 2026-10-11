@@ -107,16 +107,7 @@ if (!$product) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Adjust Product Stock</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        .form-container { max-width: 600px; margin: 0 auto; }
-        .form-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 5px; font-weight: bold; }
-        input, select, textarea { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
-        .btn { display: inline-block; background: #28a745; color: white; padding: 10px 15px; border: 0; border-radius: 4px; cursor: pointer; text-decoration: none; }
-        .btn-secondary { background: #6c757d; }
-        .error { color: #9b1c1c; padding: 10px; background: #fde2e2; border-radius: 4px; }
-    </style>
+    <link rel="stylesheet" href="../css/admin.css">
 </head>
 <body>
     <main class="form-container">

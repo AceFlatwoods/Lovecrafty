@@ -18,20 +18,7 @@ $user_role = $_SESSION['user_role'];
 <html>
 <head>
     <title>Dashboard - Condominios</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        nav ul { list-style: none; padding: 0; }
-        nav li { margin: 5px 0; }
-        nav a { 
-            display: block; 
-            padding: 10px; 
-            background: #f0f0f0; 
-            text-decoration: none; 
-            color: #333;
-            border-radius: 5px;
-        }
-        nav a:hover { background: #ddd; }
-    </style>
+    <link rel="stylesheet" href="../css/admin.css">
 </head>
 <body>
     <h1>Admin Dashboard</h1>

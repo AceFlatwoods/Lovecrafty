@@ -48,7 +48,7 @@
       </div>
 
       <!-- Register Form -->
-      <div id="register-form" class="auth-form" style="display: none;">
+      <div id="register-form" class="auth-form is-hidden">
         <h2>Create Account</h2>
         <form id="registerForm">
           <div class="form-group">
@@ -105,8 +105,8 @@
       tab.classList.toggle('active', tab.textContent.toLowerCase().includes(tabName));
     });
     
-    document.getElementById('login-form').style.display = tabName === 'login' ? 'block' : 'none';
-    document.getElementById('register-form').style.display = tabName === 'register' ? 'block' : 'none';
+    document.getElementById('login-form').classList.toggle('is-hidden', tabName !== 'login');
+    document.getElementById('register-form').classList.toggle('is-hidden', tabName !== 'register');
   }
 
 </script>

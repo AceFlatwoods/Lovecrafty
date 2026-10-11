@@ -89,26 +89,7 @@ $pageUrl = static function (int $targetPage) use ($queryString): string {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inventory Movement History</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 20px; color: #242424; }
-        .toolbar, .filters, .pagination { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
-        .toolbar { margin-bottom: 20px; }
-        .filters { margin: 20px 0; }
-        .filters label { display: flex; gap: 6px; align-items: center; }
-        select, button { padding: 8px; }
-        a { color: #0069d9; text-decoration: none; }
-        a:hover { text-decoration: underline; }
-        .btn { display: inline-block; background: #6c757d; color: #fff; padding: 8px 12px; border-radius: 4px; }
-        .table-wrap { overflow-x: auto; }
-        table { width: 100%; border-collapse: collapse; margin-top: 16px; }
-        th, td { border: 1px solid #ddd; padding: 9px; text-align: left; }
-        th { background: #f2f2f2; white-space: nowrap; }
-        .movement-entry { color: #176b37; font-weight: bold; }
-        .movement-exit { color: #9b1c1c; font-weight: bold; }
-        .movement-adjustment { color: #7a4b00; font-weight: bold; }
-        .pagination { justify-content: space-between; margin-top: 18px; }
-        .empty { padding: 20px; background: #f7f7f7; }
-    </style>
+    <link rel="stylesheet" href="../css/admin.css">
 </head>
 <body>
     <h1>Inventory Movement History</h1>

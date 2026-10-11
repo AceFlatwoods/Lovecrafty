@@ -44,30 +44,11 @@ $result = $db->query($query);
 <html>
 <head>
     <title>Client Orders</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-        th { background-color: #f2f2f2; }
-        .actions { white-space: nowrap; }
-        .btn { 
-            background: #4CAF50; color: white; padding: 8px 12px; 
-            text-decoration: none; border-radius: 4px; 
-        }
-        .btn:hover { background: #45a049; }
-        .status-message {
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 4px;
-        }
-        .success { background-color: #dff0d8; color: #3c763d; }
-        .error { background-color: #f2dede; color: #a94442; }
-    </style>
+    <link rel="stylesheet" href="../css/admin.css">
 </head>
 <body>
     <h1>Client Orders</h1>
-    <a href="dashboard.php" class="btn" style="background: #6c757d;">Dashboard</a>
+    <a href="dashboard.php" class="btn btn-secondary">Dashboard</a>
     
     <?php
     // Show success message if redirected after update
@@ -103,10 +84,10 @@ $result = $db->query($query);
             <td><?= htmlspecialchars($order['address']) ?></td>
             <td><?= htmlspecialchars($order['city']) ?></td>
             <td>
-                <form method="post" style="display: inline;">
+                <form method="post" class="inline-form">
                     <input type="hidden" name="id_order" value="<?= $order['id_order'] ?>">
                     | Status: 
-                    <select name="status" onchange="this.form.submit()" style="border:none; background:none; padding:0;">
+                    <select name="status" class="order-status-select" onchange="this.form.submit()">
                         <option value="Processing" <?= $order['status']=='Processing'?'selected':'' ?>>Processing</option>
                         <option value="Shipped" <?= $order['status']=='Shipped'?'selected':'' ?>>Shipped</option>
                         <option value="Delivered" <?= $order['status']=='Delivered'?'selected':'' ?>>Delivered</option>
