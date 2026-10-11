@@ -27,33 +27,41 @@ try {
 
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    try {
-        $stmt = $conn->prepare("
-            UPDATE productos SET 
-                nombre = ?, 
-                descripcion = ?, 
-                precio = ?, 
-                stock = ?, 
-                id_categoria = ?, 
-                image_url = ?
-            WHERE id_producto = ?
-        ");
-        
-        $stmt->execute([
-            $_POST['nombre'],
-            $_POST['descripcion'],
-            $_POST['precio'],
-            $_POST['stock'],
-            $_POST['id_categoria'],
-            $_POST['image_url'],
-            $_POST['id_producto']
-        ]);
-        
-        $_SESSION['success'] = "Product updated successfully!";
-        header("Location: product_list.php");
-        exit();
-    } catch (PDOException $e) {
-        $_SESSION['error'] = "Error updating product: " . $e->getMessage();
+    $minimumStock = filter_var($_POST['stock_minimo'] ?? null, FILTER_VALIDATE_INT);
+
+    if ($minimumStock === false || $minimumStock === null || $minimumStock < 0) {
+        $_SESSION['error'] = "Minimum stock must be a non-negative whole number.";
+    } else {
+        try {
+            $stmt = $conn->prepare("
+                UPDATE productos SET
+                    nombre = ?,
+                    descripcion = ?,
+                    precio = ?,
+                    stock = ?,
+                    stock_minimo = ?,
+                    id_categoria = ?,
+                    image_url = ?
+                WHERE id_producto = ?
+            ");
+
+            $stmt->execute([
+                $_POST['nombre'],
+                $_POST['descripcion'],
+                $_POST['precio'],
+                $_POST['stock'],
+                $minimumStock,
+                $_POST['id_categoria'],
+                $_POST['image_url'],
+                $_POST['id_producto']
+            ]);
+
+            $_SESSION['success'] = "Product updated successfully!";
+            header("Location: product_list.php");
+            exit();
+        } catch (PDOException $e) {
+            $_SESSION['error'] = "Error updating product: " . $e->getMessage();
+        }
     }
 }
 ?>
@@ -117,6 +125,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <div class="form-group">
             <label>Stock:</label>
             <input type="number" name="stock" min="0" value="<?= $product['stock'] ?? '' ?>" required>
+        </div>
+
+        <div class="form-group">
+            <label for="stock_minimo">Minimum Stock Alert:</label>
+            <input type="number" id="stock_minimo" name="stock_minimo" min="0" value="<?= htmlspecialchars($product['stock_minimo'] ?? '5') ?>" required>
+            <small>Show a low-stock warning when stock reaches this quantity or lower.</small>
         </div>
         
         <div class="form-group">

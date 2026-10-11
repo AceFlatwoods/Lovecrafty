@@ -12,6 +12,19 @@ $query = "SELECT p.*, c.nombre AS categoria
           LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
           ORDER BY p.id_producto ASC";
 $products = $conn->query($query)->fetchAll(PDO::FETCH_ASSOC);
+$lowStockCount = 0;
+$outOfStockCount = 0;
+
+foreach ($products as $product) {
+    $stock = (int)$product['stock'];
+    $minimumStock = (int)$product['stock_minimo'];
+
+    if ($stock <= 0) {
+        $outOfStockCount++;
+    } elseif ($stock <= $minimumStock) {
+        $lowStockCount++;
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -23,7 +36,10 @@ $products = $conn->query($query)->fetchAll(PDO::FETCH_ASSOC);
         table { width: 100%; border-collapse: collapse; margin-top: 20px; }
         th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
         th { background-color: #f2f2f2; }
-        .low-stock { color: red; font-weight: bold; }
+        .stock-status { display: inline-block; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; }
+        .status-available { color: #176b37; background: #e2f4e8; }
+        .status-low { color: #7a4b00; background: #fff1cc; }
+        .status-out { color: #9b1c1c; background: #fde2e2; }
         a { color: #007bff; text-decoration: none; }
         a:hover { text-decoration: underline; }
         .btn { 
@@ -41,6 +57,7 @@ $products = $conn->query($query)->fetchAll(PDO::FETCH_ASSOC);
     <h1>Product Management</h1>
     <a href="dashboard.php" class="btn">Back to Dashboard</a>
     <a href="add_product.php" class="btn" style="background: #2898a7;">Add New Product</a>
+    <p>Low stock: <?= $lowStockCount ?> | Out of stock: <?= $outOfStockCount ?></p>
 
     <?php foreach (['success', 'error'] as $messageType): ?>
         <?php if (isset($_SESSION[$messageType])): ?>
@@ -58,19 +75,27 @@ $products = $conn->query($query)->fetchAll(PDO::FETCH_ASSOC);
             <th>Description</th>
             <th>Price</th>
             <th>Stock</th>
+            <th>Minimum stock</th>
+            <th>Status</th>
             <th>Category</th>
             <th>Image URL</th>
             <th>Actions</th>
         </tr>
         <?php foreach ($products as $product): ?>
+        <?php
+            $stock = (int)$product['stock'];
+            $minimumStock = (int)$product['stock_minimo'];
+            $statusLabel = $stock <= 0 ? 'Out of stock' : ($stock <= $minimumStock ? 'Low stock' : 'Available');
+            $statusClass = $stock <= 0 ? 'status-out' : ($stock <= $minimumStock ? 'status-low' : 'status-available');
+        ?>
         <tr>
             <td><?= htmlspecialchars($product['id_producto']) ?></td>
             <td><?= htmlspecialchars($product['nombre']) ?></td>
             <td><?= htmlspecialchars($product['descripcion']) ?></td>
             <td>$<?= number_format($product['precio'], 2) ?></td>
-            <td class="<?= $product['stock'] <= 5 ? 'low-stock' : '' ?>"> <!--  We also have this to make it red when the stock is low but we prolly won't showcase it :b -->
-                <?= $product['stock'] ?>
-            </td>
+            <td><?= $stock ?></td>
+            <td><?= $minimumStock ?></td>
+            <td><span class="stock-status <?= $statusClass ?>"><?= $statusLabel ?></span></td>
             <td><?= htmlspecialchars($product['categoria'] ?? 'N/A') ?></td>
             <td><?= htmlspecialchars($product['image_url']) ?></td>
             <td>

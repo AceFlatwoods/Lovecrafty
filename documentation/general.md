@@ -1,7 +1,7 @@
 
 ## Product catalog and inventory
 
-The shop page (`items.html`) loads the full product catalog from `productos`; the home page links to it from the featured products section. Basic product creation, editing, and deletion pages are available from the admin dashboard under **Products**. Deletion is currently physical, and stock can be overwritten from the edit form; there is not yet a stock-movement workflow. To grant an existing account access, set its `users.role` value to `admin` in MySQL, then sign in again. Fresh database imports include the `role` column; for an existing database, run:
+The shop page (`items.html`) loads the full product catalog from `productos`; the home page links to it from the featured products section. Basic product creation, editing, and deletion pages are available from the admin dashboard under **Products**. Deletion is currently physical, and stock can still be overwritten from the edit form. Checkout now checks and deducts stock transactionally, recording each sale in `movimientos_inventario`. To grant an existing account access, set its `users.role` value to `admin` in MySQL, then sign in again. Fresh database imports include the `role` column; for an existing database, run:
 
 ```sql
 ALTER TABLE users ADD COLUMN role VARCHAR(20) NOT NULL DEFAULT 'user';
@@ -19,17 +19,17 @@ Statuses below reflect the current application and SQL dump. `Partial` means a r
 | 1 | Register products with category, price, and image | Partial | `adminstuff/add_product.php` saves these fields, but the image is an optional URL/path rather than a validated upload. |
 | 2 | Edit product information | Implemented (basic) | `adminstuff/edit_product.php` updates product fields, including stock directly. |
 | 3 | Soft-delete products | Not implemented | `adminstuff/delete_product.php` physically deletes products when allowed; there is no active/inactive column. |
-| 4 | Quick stock entries and exits | Partial | Stock can be overwritten in the edit form, but there are no separate entry/exit operations or movement records. |
-| 5 | Inventory movement history | Not implemented | There is no inventory movements table or history screen/API. |
-| 6 | Alerts for minimum or zero stock | Partial | `adminstuff/product_list.php` highlights stock at or below a fixed value of 5; there is no per-product minimum or alerts view/API. |
+| 4 | Quick stock entries and exits | Partial | Checkout validates available stock and records sale exits. There is not yet an admin workflow for receiving stock or making manual adjustments. |
+| 5 | Inventory movement history | Partial | Opening balances and checkout sales are stored in `movimientos_inventario`; a movement history screen/API is still missing. |
+| 6 | Alerts for minimum or zero stock | Implemented (basic) | Each product has an editable minimum. `adminstuff/product_list.php` shows low/out-of-stock status and counts; `api/products/get_all.php` returns `estado_stock`. There is no dedicated alerts page/API. |
 | 7 | Filter by name, category, and inventory state | Partial | Name search exists in `testing.html` through `api/products/search.php`. Category and stock-state filters are absent, and the search is not part of the admin inventory list. |
 | 8 | Inventory value, out-of-stock, and low-stock indicators | Not implemented | The admin dashboard has no inventory statistics. |
 
 ### Recommended starting point
 
-Start with the **inventory database migration and rules** before implementing more screens or endpoints. The reference scripts in `db/tables/` add a minimum-stock field and active/inactive state to `productos`, then create a `movimientos_inventario` table linked to products. The movement script records each product's current stock as an opening-balance adjustment. This foundation is needed for reliable stock adjustments, history, alerts, filtering, and metrics.
+The inventory database migration is in place. Next, add an admin workflow for stock entries and adjustments, followed by a movement history view/API. The existing `db/tables/` scripts document the schema migration and opening-balance records.
 
-After the schema is in place, implement stock entry/exit operations and their movement records first; then build the movement history, soft delete, alerts, filters, and dashboard indicators on that consistent data.
+Soft delete, category/state filters, total inventory value, and a dedicated alerts view/API remain follow-up work.
 
 ## Database table scripts
 
