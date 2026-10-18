@@ -54,21 +54,17 @@ $stmt = $conn->prepare("
 ");
 $stmt->execute($parameters);
 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
-$lowStockCount = 0;
-$outOfStockCount = 0;
-
-$activeProducts = $conn->query('SELECT stock, stock_minimo FROM productos WHERE activo = 1')
-    ->fetchAll(PDO::FETCH_ASSOC);
-foreach ($activeProducts as $product) {
-    $stock = (int)$product['stock'];
-    $minimumStock = (int)$product['stock_minimo'];
-
-    if ($stock <= 0) {
-        $outOfStockCount++;
-    } elseif ($stock <= $minimumStock) {
-        $lowStockCount++;
-    }
-}
+$inventorySummary = $conn->query('
+    SELECT
+        COALESCE(SUM(precio * stock), 0) AS inventory_value,
+        COALESCE(SUM(stock <= 0), 0) AS out_of_stock_count,
+        COALESCE(SUM(stock > 0 AND stock <= stock_minimo), 0) AS low_stock_count
+    FROM productos
+    WHERE activo = 1
+')->fetch(PDO::FETCH_ASSOC);
+$inventoryValue = (float)$inventorySummary['inventory_value'];
+$outOfStockCount = (int)$inventorySummary['out_of_stock_count'];
+$lowStockCount = (int)$inventorySummary['low_stock_count'];
 ?>
 
 <!DOCTYPE html>
@@ -82,7 +78,20 @@ foreach ($activeProducts as $product) {
     <a href="dashboard.php" class="btn">Back to Dashboard</a>
     <a href="add_product.php" class="btn btn-add">Add New Product</a>
     <a href="inventory_history.php" class="btn btn-history">Movement history</a>
-    <p>Low stock: <?= $lowStockCount ?> | Out of stock: <?= $outOfStockCount ?></p>
+    <section class="inventory-summary" aria-label="Inventory summary">
+        <div class="inventory-summary-card">
+            <span class="inventory-summary-label">Inventory value</span>
+            <strong>$<?= number_format($inventoryValue, 2, '.', ',') ?></strong>
+        </div>
+        <div class="inventory-summary-card">
+            <span class="inventory-summary-label">Low stock</span>
+            <strong><?= $lowStockCount ?></strong>
+        </div>
+        <div class="inventory-summary-card">
+            <span class="inventory-summary-label">Out of stock</span>
+            <strong><?= $outOfStockCount ?></strong>
+        </div>
+    </section>
 
     <form method="GET" class="filters product-filters">
         <label for="name">Name

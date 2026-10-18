@@ -23,13 +23,13 @@ Statuses below reflect the current application and SQL dump. `Partial` means a r
 | 5 | Inventory movement history | Implemented (basic) | `adminstuff/inventory_history.php` shows recorded movements with date, product, type, signed quantity, before/after stock, reason, and user. Product/type filters and pagination are available. Changes from before movement tracking was enabled cannot be reconstructed. |
 | 6 | Alerts for minimum or zero stock | Partial | Each product has an editable minimum. `adminstuff/product_list.php` shows low/out-of-stock status and counts; `api/products/get_all.php` returns `estado_stock`. There is no dedicated alerts page/API or notification. |
 | 7 | Filter by name, category, and inventory state | Implemented (basic) | `adminstuff/product_list.php` filters products by name, category, and stock level (available, low, or out). Inactive products remain visible in the admin list so they can be reactivated. |
-| 8 | Inventory value, out-of-stock, and low-stock indicators | Partial | `adminstuff/product_list.php` shows counts for out-of-stock and low-stock products; total inventory value is not calculated and these indicators are not on the dashboard. |
+| 8 | Inventory value, out-of-stock, and low-stock indicators | Implemented (basic) | `adminstuff/product_list.php` shows the total value (`price × stock`) for active products and counts active products with low or zero stock. |
 
 ### Recommended starting point
 
-The admin workflow for stock entries/exits, movement-history view, product activation toggle, and product filters are implemented. Next, calculate and display total inventory value.
+The admin workflow for stock entries/exits, movement-history view, product activation toggle, product filters, and the inventory summary are implemented.
 
-Total inventory value and a dedicated alerts view/API remain follow-up work.
+A dedicated alerts view/API remains follow-up work.
 
 ## Database table scripts
 
