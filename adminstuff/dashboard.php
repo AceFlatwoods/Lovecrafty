@@ -28,6 +28,7 @@ $user_role = $_SESSION['user_role'];
                 <li><a href="order_list.php">Clients orders</a></li>
                 <li><a href="listar_todos.php">Clients</a></li>
                 <li><a href="product_list.php">Products</a></li>
+                <li><a href="inventory_alerts.php">Inventory alerts</a></li>
                 <li><a href="address_list.php">Clients order address</a></li>
             <?php else: ?>
                 Oops, it seems there was an error, please close this page.
