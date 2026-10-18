@@ -11,19 +11,55 @@ if (empty($_SESSION['product_status_csrf_token'])) {
     $_SESSION['product_status_csrf_token'] = bin2hex(random_bytes(32));
 }
 
-$query = "SELECT p.*, c.nombre AS categoria
-          FROM productos p
-          LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
-          ORDER BY p.id_producto ASC";
-$products = $conn->query($query)->fetchAll(PDO::FETCH_ASSOC);
+$search = $_GET['name'] ?? '';
+$search = is_string($search) ? trim($search) : '';
+$categoryId = filter_var($_GET['category'] ?? '', FILTER_VALIDATE_INT);
+$categoryId = $categoryId === false || $categoryId < 1 ? null : $categoryId;
+$inventoryStatus = $_GET['inventory_status'] ?? '';
+if (!is_string($inventoryStatus) ||
+    !in_array($inventoryStatus, ['', 'available', 'low', 'out'], true)) {
+    $inventoryStatus = '';
+}
+
+$categories = $conn->query('SELECT id_categoria, nombre FROM categorias ORDER BY nombre')
+    ->fetchAll(PDO::FETCH_ASSOC);
+$conditions = [];
+$parameters = [];
+
+if ($search !== '') {
+    $conditions[] = 'p.nombre LIKE :name';
+    $parameters[':name'] = '%' . $search . '%';
+}
+
+if ($categoryId !== null) {
+    $conditions[] = 'p.id_categoria = :categoryId';
+    $parameters[':categoryId'] = $categoryId;
+}
+
+if ($inventoryStatus === 'out') {
+    $conditions[] = 'p.stock <= 0';
+} elseif ($inventoryStatus === 'low') {
+    $conditions[] = 'p.stock > 0 AND p.stock <= p.stock_minimo';
+} elseif ($inventoryStatus === 'available') {
+    $conditions[] = 'p.stock > p.stock_minimo';
+}
+
+$where = $conditions ? 'WHERE ' . implode(' AND ', $conditions) : '';
+$stmt = $conn->prepare("
+    SELECT p.*, c.nombre AS categoria
+    FROM productos p
+    LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+    $where
+    ORDER BY p.id_producto ASC
+");
+$stmt->execute($parameters);
+$products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 $lowStockCount = 0;
 $outOfStockCount = 0;
 
-foreach ($products as $product) {
-    if (!(int)$product['activo']) {
-        continue;
-    }
-
+$activeProducts = $conn->query('SELECT stock, stock_minimo FROM productos WHERE activo = 1')
+    ->fetchAll(PDO::FETCH_ASSOC);
+foreach ($activeProducts as $product) {
     $stock = (int)$product['stock'];
     $minimumStock = (int)$product['stock_minimo'];
 
@@ -48,6 +84,34 @@ foreach ($products as $product) {
     <a href="inventory_history.php" class="btn btn-history">Movement history</a>
     <p>Low stock: <?= $lowStockCount ?> | Out of stock: <?= $outOfStockCount ?></p>
 
+    <form method="GET" class="filters product-filters">
+        <label for="name">Name
+            <input type="search" id="name" name="name" value="<?= htmlspecialchars($search, ENT_QUOTES, 'UTF-8') ?>">
+        </label>
+        <label for="category">Category
+            <select id="category" name="category">
+                <option value="">All categories</option>
+                <?php foreach ($categories as $category): ?>
+                    <option value="<?= (int)$category['id_categoria'] ?>"
+                        <?= $categoryId === (int)$category['id_categoria'] ? 'selected' : '' ?>>
+                        <?= htmlspecialchars($category['nombre'], ENT_QUOTES, 'UTF-8') ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+        </label>
+        <label for="inventory_status">Inventory
+            <select id="inventory_status" name="inventory_status">
+                <option value="">All stock levels</option>
+                <option value="available" <?= $inventoryStatus === 'available' ? 'selected' : '' ?>>Available</option>
+                <option value="low" <?= $inventoryStatus === 'low' ? 'selected' : '' ?>>Low stock</option>
+                <option value="out" <?= $inventoryStatus === 'out' ? 'selected' : '' ?>>Out of stock</option>
+            </select>
+        </label>
+        <button type="submit" class="status-button">Filter</button>
+        <a href="product_list.php">Clear filters</a>
+    </form>
+    <p><?= count($products) ?> product(s) found</p>
+
     <?php foreach (['success', 'error'] as $messageType): ?>
         <?php if (isset($_SESSION[$messageType])): ?>
             <p class="<?= $messageType === 'error' ? 'low-stock' : '' ?>">
@@ -57,6 +121,7 @@ foreach ($products as $product) {
         <?php endif; ?>
     <?php endforeach; ?>
     
+    <?php if ($products): ?>
     <table border="1">
         <tr>
             <th>ID</th>
@@ -64,9 +129,9 @@ foreach ($products as $product) {
             <th>Description</th>
             <th>Price</th>
             <th>Stock</th>
-            <th>Minimum stock</th>
+            <th>Min Stock</th>
             <th>Status</th>
-            <th>Shop visibility</th>
+            <th>Shop Visibility</th>
             <th>Category</th>
             <th>Image URL</th>
             <th>Actions</th>
@@ -103,5 +168,8 @@ foreach ($products as $product) {
         </tr>
         <?php endforeach; ?>
     </table>
+    <?php else: ?>
+        <p class="empty">No products match these filters.</p>
+    <?php endif; ?>
 </body>
 </html>

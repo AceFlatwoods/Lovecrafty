@@ -22,14 +22,14 @@ Statuses below reflect the current application and SQL dump. `Partial` means a r
 | 4 | Quick stock entries and exits | Implemented (basic) | Admins can add stock or record an exit from `adminstuff/adjust_stock.php`. Each operation locks and updates the product and records its signed quantity, before/after balances, reason, user, and time in one transaction. Checkout also records sale exits. |
 | 5 | Inventory movement history | Implemented (basic) | `adminstuff/inventory_history.php` shows recorded movements with date, product, type, signed quantity, before/after stock, reason, and user. Product/type filters and pagination are available. Changes from before movement tracking was enabled cannot be reconstructed. |
 | 6 | Alerts for minimum or zero stock | Partial | Each product has an editable minimum. `adminstuff/product_list.php` shows low/out-of-stock status and counts; `api/products/get_all.php` returns `estado_stock`. There is no dedicated alerts page/API or notification. |
-| 7 | Filter by name, category, and inventory state | Partial | Name search exists in `testing.html` through `api/products/search.php`. Category and stock-state filters are absent, and the search is not part of the admin inventory list. |
+| 7 | Filter by name, category, and inventory state | Implemented (basic) | `adminstuff/product_list.php` filters products by name, category, and stock level (available, low, or out). Inactive products remain visible in the admin list so they can be reactivated. |
 | 8 | Inventory value, out-of-stock, and low-stock indicators | Partial | `adminstuff/product_list.php` shows counts for out-of-stock and low-stock products; total inventory value is not calculated and these indicators are not on the dashboard. |
 
 ### Recommended starting point
 
-The admin workflow for stock entries/exits, movement-history view, and product activation toggle are implemented. Next, complete the product filters by name, category, and inventory state.
+The admin workflow for stock entries/exits, movement-history view, product activation toggle, and product filters are implemented. Next, calculate and display total inventory value.
 
-Category/state filters, total inventory value, and a dedicated alerts view/API remain follow-up work.
+Total inventory value and a dedicated alerts view/API remain follow-up work.
 
 ## Database table scripts
 
