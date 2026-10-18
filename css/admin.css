@@ -93,6 +93,14 @@ th {
     background: #5935a0;
 }
 
+.btn-alerts {
+    background: #a94442;
+}
+
+.btn-alerts:hover {
+    background: #873735;
+}
+
 .form-container {
     max-width: 600px;
     margin: 0 auto;
@@ -228,6 +236,27 @@ label {
 
 .filters {
     margin: 20px 0;
+}
+
+.alert-filters {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin: 20px 0;
+}
+
+.alert-filters a {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    color: #333;
+    text-decoration: none;
+}
+
+.alert-filters a[aria-current="page"] {
+    border-color: #8B4513;
+    background: #8B4513;
+    color: #fff;
 }
 
 .filters label {
