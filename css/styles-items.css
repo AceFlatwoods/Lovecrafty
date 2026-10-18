@@ -29,6 +29,10 @@
     transform: translateY(-5px);
 }
 
+.product-card-out-of-stock:hover {
+    transform: none;
+}
+
 .product-image {
     display: block;
     width: 100%;
@@ -37,6 +41,21 @@
     max-height: none;
     object-fit: contain;
     background: #f9f9f9;
+}
+
+.product-image-out-of-stock {
+    filter: grayscale(1);
+    opacity: 0.65;
+}
+
+.product-price-out-of-stock {
+    color: #777 !important;
+}
+
+.product-info .btn:disabled {
+    background: #888;
+    cursor: not-allowed;
+    opacity: 0.8;
 }
 
 .product-info {

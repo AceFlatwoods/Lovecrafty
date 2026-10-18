@@ -55,7 +55,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $conn->rollBack();
             http_response_code(409);
             echo json_encode([
-                'error' => 'Requested quantity exceeds available stock',
+                'error' => (int)$product['stock'] <= 0
+                    ? 'This product is out of stock'
+                    : 'Requested quantity exceeds available stock',
                 'available' => max(0, $availableToAdd)
             ]);
             exit;

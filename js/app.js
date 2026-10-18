@@ -83,16 +83,24 @@ async function addToCart(productId) {
     return;
   }
 
-  const response = await fetch('chocolaterie-backend/api/cart/add.php', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ userId, productId, quantity: 1 }),
-  });
+  try {
+    const response = await fetch('chocolaterie-backend/api/cart/add.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ userId, productId, quantity: 1 }),
+    });
 
-  const result = await response.json();
-  alert(result.message || result.error);
-  if (response.ok) {
+    const result = await response.json();
+    if (!response.ok) {
+      alert(result.error || 'Could not add this product to your cart.');
+      return;
+    }
+
+    alert(result.message || 'Product added to cart');
     await updateCartCount();
+  } catch (error) {
+    console.error('Error adding product to cart:', error);
+    alert('Could not add this product to your cart. Please try again.');
   }
 }
 //--------------------------------------------------------------------------------------------------------Add to cart button

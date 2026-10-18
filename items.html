@@ -103,10 +103,18 @@
                 
                 const productCard = document.createElement('div');
                 productCard.className = 'product-card';
+                const isOutOfStock = Number(product.stock) <= 0 || product.estado_stock === 'agotado';
+                if (isOutOfStock) {
+                  productCard.classList.add('product-card-out-of-stock');
+                }
+
                 const image = document.createElement('img');
                 image.src = product.image_url || 'img/default-product.png';
                 image.alt = product.nombre;
                 image.className = 'product-image';
+                if (isOutOfStock) {
+                  image.classList.add('product-image-out-of-stock');
+                }
                 image.onerror = () => {
                   image.onerror = null;
                   image.src = 'img/default-product.png';
@@ -118,10 +126,16 @@
                 name.textContent = product.nombre;
                 const productPrice = document.createElement('p');
                 productPrice.textContent = `$${price.toFixed(2)}`;
+                if (isOutOfStock) {
+                  productPrice.classList.add('product-price-out-of-stock');
+                }
                 const addButton = document.createElement('button');
                 addButton.className = 'btn';
-                addButton.textContent = 'Add to Cart';
-                addButton.addEventListener('click', () => addToCart(product.id_producto));
+                addButton.textContent = isOutOfStock ? 'Out of Stock' : 'Add to Cart';
+                addButton.disabled = isOutOfStock;
+                if (!isOutOfStock) {
+                  addButton.addEventListener('click', () => addToCart(product.id_producto));
+                }
 
                 info.append(name, productPrice, addButton);
                 productCard.append(image, info);
@@ -155,14 +169,17 @@
       })
       .then(async response => {
         const result = await response.json();
-        if (response.ok) await updateCartCount();
-        return result;
-      })
-      .then(result => {
-        alert(result.message || 'Item added to cart');
+        if (!response.ok) {
+          alert(result.error || 'Could not add this product to your cart.');
+          return;
+        }
+
+        alert(result.message || 'Product added to cart');
+        await updateCartCount();
       })
       .catch(error => {
-        alert('Error adding item to cart');
+        console.error('Error adding product to cart:', error);
+        alert('Could not add this product to your cart. Please try again.');
       });
     }
   </script>
