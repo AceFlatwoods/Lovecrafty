@@ -164,16 +164,22 @@ $lowStockCount = (int)$inventorySummary['low_stock_count'];
             <td><span class="stock-status <?= $statusClass ?>"><?= $statusLabel ?></span></td>
             <td><?= $isActive ? 'Visible' : 'Hidden' ?></td>
             <td><?= htmlspecialchars($product['categoria'] ?? 'N/A') ?></td>
-            <td><?= htmlspecialchars($product['image_url']) ?></td>
             <td>
-                <a href="edit_product.php?id=<?= $product['id_producto'] ?>">Edit</a>
-                | <a href="adjust_stock.php?id=<?= $product['id_producto'] ?>">Adjust stock</a>
-                | <form method="POST" action="delete_product.php" class="inline-form">
-                    <input type="hidden" name="id" value="<?= (int)$product['id_producto'] ?>">
-                    <input type="hidden" name="activo" value="<?= $isActive ? '0' : '1' ?>">
-                    <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['product_status_csrf_token'], ENT_QUOTES, 'UTF-8') ?>">
-                    <button type="submit" class="status-button"><?= $isActive ? 'Deactivate' : 'Activate' ?></button>
-                </form>
+                <span class="product-image-url" title="<?= htmlspecialchars($product['image_url'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
+                    <?= htmlspecialchars($product['image_url'] ?? '', ENT_QUOTES, 'UTF-8') ?>
+                </span>
+            </td>
+            <td>
+                <div class="product-actions">
+                    <a class="product-action-button" href="edit_product.php?id=<?= (int)$product['id_producto'] ?>">Edit</a>
+                    <a class="product-action-button" href="adjust_stock.php?id=<?= (int)$product['id_producto'] ?>">Adjust stock</a>
+                    <form method="POST" action="delete_product.php" class="inline-form">
+                        <input type="hidden" name="id" value="<?= (int)$product['id_producto'] ?>">
+                        <input type="hidden" name="activo" value="<?= $isActive ? '0' : '1' ?>">
+                        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['product_status_csrf_token'], ENT_QUOTES, 'UTF-8') ?>">
+                        <button type="submit" class="status-button"><?= $isActive ? 'Deactivate' : 'Activate' ?></button>
+                    </form>
+                </div>
             </td>
         </tr>
         <?php endforeach; ?>

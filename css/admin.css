@@ -1,3 +1,5 @@
+@import url("theme.css");
+
 body {
     font-family: Arial, sans-serif;
     margin: 20px;
@@ -53,10 +55,45 @@ th {
     white-space: nowrap;
 }
 
+.product-image-url {
+    display: block;
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.product-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.product-action-button {
+    display: inline-block;
+    padding: 8px 12px;
+    border: 0;
+    border-radius: 4px;
+    background: var(--primary-color);
+    color: var(--color-white);
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.product-action-button:hover {
+    background: var(--primary-hover);
+}
+
+.product-action-button:focus-visible {
+    outline: 2px solid #242424;
+    outline-offset: 2px;
+}
+
 .btn {
     display: inline-block;
-    background: #8B4513;
-    color: #fff;
+    background: var(--primary-color);
+    color: var(--color-white);
     padding: 8px 12px;
     border: 0;
     border-radius: 4px;
@@ -66,7 +103,7 @@ th {
 }
 
 .btn:hover {
-    background: #6f360f;
+    background: var(--primary-hover);
 }
 
 .btn-secondary {
@@ -177,8 +214,8 @@ label {
 
 .status-button {
     display: inline-block;
-    background: #8B4513;
-    color: #fff;
+    background: var(--primary-color);
+    color: var(--color-white);
     padding: 8px 12px;
     border: 0;
     border-radius: 4px;
@@ -187,7 +224,7 @@ label {
 }
 
 .status-button:hover {
-    background: #6f360f;
+    background: var(--primary-hover);
 }
 
 .status-button:focus-visible {
@@ -222,11 +259,11 @@ label {
     padding: 16px;
     border: 1px solid #e0d5cd;
     border-radius: 6px;
-    background: #fff;
+    background: var(--color-white);
 }
 
 .inventory-summary-card strong {
-    color: #8B4513;
+    color: var(--primary-color);
     font-size: 1.35rem;
 }
 
@@ -254,9 +291,9 @@ label {
 }
 
 .alert-filters a[aria-current="page"] {
-    border-color: #8B4513;
-    background: #8B4513;
-    color: #fff;
+    border-color: var(--primary-color);
+    background: var(--primary-color);
+    color: var(--color-white);
 }
 
 .filters label {
