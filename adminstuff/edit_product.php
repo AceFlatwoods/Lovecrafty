@@ -120,8 +120,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </div>
         
         <button type="submit" class="btn">Save Changes</button>
-        <a href="adjust_stock.php?id=<?= htmlspecialchars((string)($product['id_producto'] ?? '')) ?>" class="btn btn-add">Adjust stock</a>
-        <a href="product_list.php" class="btn btn-secondary">Cancel</a>
+        <a href="adjust_stock.php?id=<?= htmlspecialchars((string)($product['id_producto'] ?? '')) ?>" class="btn">Adjust stock</a>
+        <a href="product_list.php" class="btn">Cancel</a>
     </form>
 </body>
 </html>

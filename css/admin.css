@@ -17,14 +17,14 @@ nav li {
 nav a {
     display: block;
     padding: 10px;
-    background: #f0f0f0;
+    background: var(--primary-color);
     text-decoration: none;
-    color: #333;
+    color: var(--color-white);
     border-radius: 5px;
 }
 
 nav a:hover {
-    background: #ddd;
+    background: var(--primary-hover);
 }
 
 .header {
@@ -112,30 +112,6 @@ th {
 
 .btn-secondary:hover {
     background: #5a6268;
-}
-
-.btn-add {
-    background: #2898a7;
-}
-
-.btn-add:hover {
-    background: #217d89;
-}
-
-.btn-history {
-    background: #6f42c1;
-}
-
-.btn-history:hover {
-    background: #5935a0;
-}
-
-.btn-alerts {
-    background: #a94442;
-}
-
-.btn-alerts:hover {
-    background: #873735;
 }
 
 .form-container {
@@ -284,16 +260,25 @@ label {
 
 .alert-filters a {
     padding: 8px 12px;
-    border: 1px solid #ddd;
+    border: 1px solid var(--primary-color);
     border-radius: 4px;
-    color: #333;
+    background: var(--primary-color);
+    color: var(--color-white);
     text-decoration: none;
 }
 
+.alert-filters a:hover {
+    background: var(--primary-hover);
+}
+
 .alert-filters a[aria-current="page"] {
-    border-color: var(--primary-color);
-    background: var(--primary-color);
+    border-color: var(--primary-light);
+    background: var(--primary-light);
     color: var(--color-white);
+}
+
+.alert-filters a[aria-current="page"]:hover {
+    background: var(--primary-hover);
 }
 
 .filters label {

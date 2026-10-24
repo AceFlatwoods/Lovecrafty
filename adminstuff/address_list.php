@@ -24,7 +24,7 @@ $result = $db->query($query);
 </head>
 <body>
     <h1>Order Addresses</h1>
-    <a href="dashboard.php" class="btn btn-secondary">Dashboard</a>
+    <a href="dashboard.php" class="btn">Dashboard</a>
     
     <table border="1">
         <tr>

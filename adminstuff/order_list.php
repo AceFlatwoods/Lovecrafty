@@ -48,7 +48,7 @@ $result = $db->query($query);
 </head>
 <body>
     <h1>Client Orders</h1>
-    <a href="dashboard.php" class="btn btn-secondary">Dashboard</a>
+    <a href="dashboard.php" class="btn">Dashboard</a>
     
     <?php
     // Show success message if redirected after update

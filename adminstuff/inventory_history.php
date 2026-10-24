@@ -94,7 +94,7 @@ $pageUrl = static function (int $targetPage) use ($queryString): string {
 <body>
     <h1>Inventory Movement History</h1>
     <div class="toolbar">
-        <a href="product_list.php" class="btn">Back to Products</a>
+        <a href="product_list.php" class="btn btn-secondary">Back to Products</a>
         <span><?= $totalMovements ?> movement(s)</span>
     </div>
 
@@ -118,7 +118,7 @@ $pageUrl = static function (int $targetPage) use ($queryString): string {
                 <option value="ajuste" <?= $type === 'ajuste' ? 'selected' : '' ?>>Adjustment</option>
             </select>
         </label>
-        <button type="submit">Filter</button>
+        <button type="submit" class="status-button">Filter</button>
         <a href="inventory_history.php">Clear</a>
     </form>
 

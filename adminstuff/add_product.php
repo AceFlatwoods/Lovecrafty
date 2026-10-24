@@ -128,7 +128,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </div>
             
             <button type="submit" class="btn">Create Product</button>
-            <a href="product_list.php" class="btn btn-secondary">Cancel</a>
+            <a href="product_list.php" class="btn">Cancel</a>
         </form>
     </div>
 </body>

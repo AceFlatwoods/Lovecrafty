@@ -75,10 +75,10 @@ $lowStockCount = (int)$inventorySummary['low_stock_count'];
 </head>
 <body>
     <h1>Product Management</h1>
-    <a href="dashboard.php" class="btn">Back to Dashboard</a>
-    <a href="add_product.php" class="btn btn-add">Add New Product</a>
-    <a href="inventory_history.php" class="btn btn-history">Movement history</a>
-    <a href="inventory_alerts.php" class="btn btn-alerts">Inventory alerts</a>
+    <a href="dashboard.php" class="btn btn-secondary">Back to Dashboard</a>
+    <a href="add_product.php" class="btn">Add New Product</a>
+    <a href="inventory_history.php" class="btn">Movement history</a>
+    <a href="inventory_alerts.php" class="btn">Inventory alerts</a>
     <section class="inventory-summary" aria-label="Inventory summary">
         <div class="inventory-summary-card">
             <span class="inventory-summary-label">Inventory value</span>

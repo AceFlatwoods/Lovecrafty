@@ -143,7 +143,7 @@ if (!$product) {
             </div>
 
             <button type="submit" class="btn">Save stock movement</button>
-            <a href="product_list.php" class="btn btn-secondary">Cancel</a>
+            <a href="product_list.php" class="btn">Cancel</a>
         </form>
     </main>
 </body>
